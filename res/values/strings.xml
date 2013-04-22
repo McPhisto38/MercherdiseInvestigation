@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Mercherdise Investigation</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="products_list_header">List Header</string>
+    <string name="product_name">Product name</string>
+    <string name="question_label_1">Присъствие на продукт</string>
+    <string name="company_name">Име на компания</string>
+    <string name="on_back_button_title">Изход</string>
+    <string name="on_back_button_message">Сигурни ли сте, че искате да затворите програмата?</string>
+    <string name="yes">Изход</string>
+    <string name="no">Продължи</string>
+    <string name="please_login">Please login</string>
+    <string name="login">Login</string>
+    <string name="clear">Clear</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
+</resources>

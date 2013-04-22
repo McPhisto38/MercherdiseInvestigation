@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal" 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FormProductActivity"
+    android:background="#ededed" >
+
+    
+	<RelativeLayout
+	    android:id="@+id/QuestionsHeader"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content" >
+	    
+	    <CheckBox 
+	        android:id="@+id/ProductsCheck"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:layout_centerVertical="true"
+        	android:gravity="right"
+	        android:layout_marginRight="5dp"/>
+	    
+	    <TextView
+	        android:id="@+id/ProductName"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+        	android:layout_centerVertical="true"
+	        android:layout_toLeftOf="@id/ProductsCheck"
+	        android:text="@string/product_name"
+	        android:textColor="#33B5E5"
+	        android:paddingLeft="2dp"
+	        android:textAppearance="?android:attr/textAppearanceLarge"
+	        android:paddingBottom="5dp" />
+	    
+	    <View
+		    android:layout_width="fill_parent"
+		    android:layout_height="2dp"
+		    android:background="#4AB8E0"
+	        android:layout_below="@id/ProductName"/>
+	    
+    </RelativeLayout>
+    
+	<RelativeLayout
+	    android:id="@+id/NavigationBar"
+	    android:layout_width="fill_parent"
+	    android:layout_height="48dp"
+        android:clickable="true"
+	    android:background="@drawable/sync_background"
+        android:onClick="sync"
+	    android:layout_alignParentBottom="true">
+	    
+	    
+	     <ImageView
+	         android:id="@+id/sync"
+	         android:layout_width="wrap_content"
+	         android:layout_height="wrap_content"
+	         android:src="@drawable/ic_popup_sync_1"
+	         android:layout_centerVertical="true"
+	         android:layout_centerHorizontal="true" />
+
+	</RelativeLayout>
+    
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/QuestionsHeader"
+        android:layout_above="@id/NavigationBar" >
+
+        <LinearLayout
+			android:id="@+id/QuestionsForm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+				<RelativeLayout
+				    android:layout_width="fill_parent"
+				    android:layout_height="wrap_content"
+				    android:padding="5dp"
+				    android:id="@+id/QuestionLayout_1" >
+
+				    <CheckBox
+				        android:id="@+id/QuestionAnswer_1_1"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_alignParentRight="true"
+				        android:layout_centerVertical="true"
+			        	android:gravity="right"
+			        	android:textSize="16sp"
+			        	android:checked="true" />
+			
+				    <TextView
+				        android:id="@+id/QuestionLabel_1"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_alignParentLeft="true"
+        				android:layout_centerVertical="true"
+				        android:layout_toLeftOf="@id/QuestionAnswer_1_1"
+				        android:textSize="16sp"
+				        android:text="@string/question_label_1" />
+				
+				</RelativeLayout>
+			
+				<RelativeLayout
+				    android:layout_width="fill_parent"
+				    android:layout_height="wrap_content"
+				    android:padding="5dp"
+				    android:id="@+id/QuestionLayout_2">
+			
+				    <TextView
+				        android:id="@+id/QuestionLabel_2"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_alignParentLeft="true"
+        				android:layout_centerVertical="true"
+				        android:layout_toLeftOf="@id/QuestionAnswer_2_1"
+				        android:textSize="16sp"
+				        android:text="Лица на продукт, които присъстват" />
+			
+				    <EditText
+				        android:id="@+id/QuestionAnswer_2_1"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_alignParentRight="true"
+				        android:layout_centerVertical="true"
+			        	android:gravity="right"
+				        android:ems="2"
+				        android:inputType="number"
+				        android:maxLength="2"
+				        android:numeric="integer"
+				        android:selectAllOnFocus="true"
+				        android:singleLine="true" >
+				
+				        <requestFocus />
+				    </EditText>
+				
+				</RelativeLayout>
+			
+				<RelativeLayout
+				    android:layout_width="fill_parent"
+				    android:layout_height="wrap_content"
+				    android:padding="5dp"
+				    android:id="@+id/QuestionLayout_3">
+				    <CheckBox
+				        android:id="@+id/QuestionAnswer_3_1"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_alignParentRight="true"
+				        android:layout_centerVertical="true"
+			        	android:gravity="right"
+			        	android:textSize="16sp"
+			        	android:checked="false" />
+			
+				    <TextView
+				        android:id="@+id/QuestionLabel_3"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_alignParentLeft="true"
+        				android:layout_centerVertical="true"
+				        android:layout_toLeftOf="@id/QuestionAnswer_3_1"
+				        android:textSize="16sp"
+				        android:text="Присъствие на касова зона" />
+				    
+				
+				</RelativeLayout>
+			
+				<RelativeLayout
+				    android:layout_width="fill_parent"
+				    android:layout_height="wrap_content"
+				    android:padding="5dp"
+				    android:id="@+id/QuestionLayout_4">
+			
+				    <EditText
+				        android:id="@+id/QuestionAnswer_4_1"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_alignParentRight="true"
+				        android:layout_centerVertical="true"
+			        	android:gravity="right"
+				        android:ems="2"
+				        android:inputType="number"
+				        android:maxLength="2"
+				        android:numeric="integer"
+				        android:selectAllOnFocus="true"
+				        android:singleLine="true"
+				        android:text="0" >
+				
+				    </EditText>
+			
+				    <TextView
+				        android:id="@+id/QuestionLabel_4"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_alignParentLeft="true"
+        				android:layout_centerVertical="true"
+				        android:layout_toLeftOf="@id/QuestionAnswer_4_1"
+				        android:textSize="16sp"
+				        android:text="Присъствие втора точка"/>
+				
+				</RelativeLayout>
+			
+				<RelativeLayout
+				    android:layout_width="fill_parent"
+				    android:layout_height="wrap_content"
+				    android:padding="5dp"
+				    android:id="@+id/QuestionLayout_5" >
+				    
+				    <TextView
+				        android:id="@+id/QuestionLabel_5"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_alignParentLeft="true"
+        				android:layout_centerVertical="true"
+				        android:layout_toLeftOf="@id/QuestionAnswer_5_1"
+				        android:textSize="16sp"
+				        android:onClick="OnMultipleChoiceQuestionClick"
+				        android:clickable="true"
+				        android:text="Процент от рафта, заделен за дедена категория, сравнено с пазарния дял" />
+				
+				    <TextView
+				        android:id="@+id/QuestionAnswer_5_1"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_alignParentRight="true"
+				        android:layout_centerVertical="true"
+				        android:gravity="center"
+				        android:minEms="2"
+			        	android:textSize="20sp"
+				        android:maxLength="4"
+				        android:textColor="#34b4e3"
+				        android:singleLine="true"
+				        android:onClick="OnMultipleChoiceQuestionClick"
+				        android:clickable="true"
+				        android:text="0%" >
+				    </TextView>
+				</RelativeLayout>
+			
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

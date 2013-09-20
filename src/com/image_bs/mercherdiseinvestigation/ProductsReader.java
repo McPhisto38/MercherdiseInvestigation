@@ -1,83 +1,94 @@
+/*
+ * Copyright (C) 2013 Image Business Solutions
+ * Developed by Nikolai Vasilev - coder.servoper@gmail.com
+ */
+
 package com.image_bs.mercherdiseinvestigation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class ProductsReader {
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-	private String mCompanyID;
-	private String mCategoryID;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.res.Resources;
+
+/**
+ * Extends ServerResonse to specify server request to get products
+ * from a specific company and category.
+ * <p>
+ * Initializes onResponseHandler and onRequestHandler from ServerResonse
+ * to handle result.
+ * <p>
+ * Provides access to products data.
+ */
+public class ProductsReader extends ServerResponse {
+
+	// TODO: To be made collection of object
+	/** The products data. */
 	private ArrayList<String[]> mProductsData;
 	
-	ProductsReader(String companyID, String categoryID)
-	{
-		this.mCompanyID = companyID;
-		this.mCategoryID = categoryID;
-		DownloadCompaniesData();
-	}
+	/** The server action listener. */
+	private ServerActionListener mServerActionListener;
 	
-	private void DownloadCompaniesData()
+	/** The application resources. */
+	private Resources mAppResources;
+	
+	/** The context. */
+	private Context mContext;
+	
+	/** The ProgressDialog. */
+	private ProgressDialog mPDialog = null;
+	
+    /**
+	 * Class Constructor Initializes the class fields and starts http request
+	 * 
+	 * @param companyID
+	 *            the company id
+	 * @param categoryID
+	 *            the category id
+	 * @param context
+	 *            the context
+	 * @param serverActionListener
+	 *            the server action listener
+	 */
+	ProductsReader(String companyID, String categoryID, Context context,
+			ServerActionListener serverActionListener)
 	{
-			String[][] productsData = new String[][] {
-					{ "company_id_1", "category_id_1", "product_id_24", "Компас Апетит 180г." }, { "company_id_1", "category_id_1", "product_id_23", "Компас Свински 180г"},
-					{ "company_id_1", "category_id_1", "product_id_25", "Компас Гъши 180г." }, { "company_id_1", "category_id_1", "product_id_22", "Компас Апетит 100г."},
-					{ "company_id_1", "category_id_1", "product_id_26", "Компас Junior Свински 100гр." }, { "company_id_1", "category_id_1", "product_id_21", "Компас Свински 300г."},
-					{ "company_id_1", "category_id_1", "product_id_27", "Каро 180г."}, { "company_id_1", "category_id_1", "product_id_20", "Каро 300г."},
-					{ "company_id_1", "category_id_2", "product_id_28", "Компас Русенско 180г."}, { "company_id_1", "category_id_2", "product_id_19", "Компас Русенско 300г."},
-					{ "company_id_1", "category_id_2", "product_id_29", "Каро Русенско 180г."}, { "company_id_1", "category_id_2", "product_id_31", "Свинско собствен сос 180г."},
-					{ "company_id_1", "category_id_2", "product_id_32", "Телешко собствен сос 180г."}, { "company_id_1", "category_id_3", "product_id_18", "Русалка Скумрия дом. сос 160г."},
-					{ "company_id_1", "category_id_3", "product_id_30", "Славянска Скумрия дом. сос 160г."}, { "company_id_1", "category_id_4", "product_id_17", "Фамила Класик 250г."},
-					{ "company_id_2", "category_id_5", "product_id_1", "Продукт 1" }, { "company_id_2", "category_id_5", "product_id_2", "Продукт 2"},
-					{ "company_id_2", "category_id_6", "product_id_3", "Продукт 3" }, { "company_id_2", "category_id_6", "product_id_4", "Продукт 4"},
-					{ "company_id_2", "category_id_7", "product_id_5", "Продукт 5" }, { "company_id_2", "category_id_7", "product_id_6", "Продукт 6"},
-					{ "company_id_2", "category_id_8", "product_id_7", "Продукт 7"}, { "company_id_2", "category_id_8", "product_id_8", "Продукт 8"},
-					{ "company_id_2", "category_id_9", "product_id_9", "Продукт 9"}, { "company_id_2", "category_id_9", "product_id_10", "Продукт 10"},
-					{ "company_id_2", "category_id_10", "product_id_11", "Продукт 11"}, { "company_id_2", "category_id_10", "product_id_12", "Продукт 12"},
-					{ "company_id_2", null, "product_id_", "Продукт 13"}, { "company_id_2", null, "product_id_14", "Продукт  14"},
-					{ "company_id_2", null, "product_id_", "Продукт 15"}, { "company_id_2", null, "product_id_16", "Продукт 16" }
-			};
+		this.mContext = context;
 
-			this.mProductsData =  new ArrayList<String[]>();
-			
-			for( int i = 0 ; i< productsData.length ; i++)
-			{
-				if( this.mCompanyID != null)
-				{
-					if( productsData[i][0].equalsIgnoreCase(this.mCompanyID) )
-					{
-						if(this.mCategoryID != null)
-						{
-							if( this.mCategoryID.equalsIgnoreCase(productsData[i][1]) )
-							{
-								this.mProductsData.add(productsData[i]);
-							}
-							else
-							{
-								continue;
-							}
-						}
-						else
-						{
-							this.mProductsData.add(productsData[i]);
-						}
-					}
-				}
-				else
-				{
-					break;
-				}
-			}
-			
-			if( this.mProductsData.isEmpty() )
-			{
-				this.mProductsData = null;
-			}
+		this.mAppResources = context.getResources();
+		String url = mAppResources.getString(R.string.url_full_forms_list);
+		
+		this.mServerActionListener = serverActionListener;
+        
+		/** Parameters needed for this specific request */
+        HashMap<String, String> myHttpRequestParams = new HashMap<String,String>();
+        myHttpRequestParams.put("company_id", companyID);
+        myHttpRequestParams.put("category_id", categoryID);
+        /** runs the http request */
+        setParametersAndRunTask(myHttpRequestParams,url);
 	}
 	
+	/**
+	 * Gets the products data.
+	 * 
+	 * @return the products data or null if it's empty
+	 */
 	ArrayList<String[]> getProductsData()
 	{
 		return this.mProductsData;
 	}
+
 	
+	/**
+	 * Gets companies names as labels.
+	 * 
+	 * @return the labels or null if products data is empty
+	 */
 	ArrayList<String> getLabels()
 	{
 		ArrayList<String> labels = new ArrayList<String>();
@@ -86,26 +97,7 @@ public class ProductsReader {
 		{
 			for(int i = 0; i < this.mProductsData.size() ; i++)
 			{
-				labels.add(this.mProductsData.get(i)[3]);
-			}
-		}
-		else
-		{
-			labels = null;
-		}
-		
-		return labels;
-	}
-	
-	ArrayList<String> getLabels(String companyID, String categoryID)
-	{
-		ArrayList<String> labels = new ArrayList<String>();
-		
-		if( this.mProductsData != null)
-		{
-			for(int i = 0; i < this.mProductsData.size() ; i++)
-			{
-				labels.add(this.mProductsData.get(i)[3]);
+				labels.add(this.mProductsData.get(i)[1]);
 			}
 		}
 		else
@@ -116,15 +108,133 @@ public class ProductsReader {
 		return labels;
 	}
 
+	/**
+	 * Gets product id.
+	 * 
+	 * @param position
+	 *            the position
+	 * @return the product id or null if given position is not in array range.
+	 */
 	String getProductID(int position)
 	{
 		String companyID = null;
 		
-		if( position <= this.mProductsData.size() )
+		if( position >= 0 &&  position <= this.mProductsData.size() )
 		{
-			companyID = this.mProductsData.get(position)[2];
+			companyID = this.mProductsData.get(position)[0];
 		}
 			
 		return companyID;
 	}
+
+	/**
+	 * Returns product name.
+	 * 
+	 * @param position
+	 *            the position
+	 * @return the product name or null if given position is not in array range.
+	 */
+	public String getProductName(int position) {
+		String companyName = null;
+		
+		if( position >= 0 &&  position <= this.mProductsData.size() )
+		{
+			companyName = this.mProductsData.get(position)[1];
+		}
+			
+		return companyName;
+	}
+
+
+	/**
+	 * It's executed when
+	 * server response is received and fills products data. If the results
+	 * does not match the requirements or exception occur then message is
+	 * shown and products data stays null. Dismisses ProgressDialog if
+	 * initialized and shown.
+	 * 
+	 * @param isSuccessful
+	 *            is http request successful
+	 * @param json
+	 *            the json response
+	 * @see com.image_bs.mercherdiseinvestigation.ServerResponse
+	 * #onResponseHandler(boolean, org.json.JSONObject)
+	 */
+	@Override
+	void onResponseHandler(boolean isSuccessful, JSONObject json) {
+		if( isSuccessful )
+		{
+			
+			try {
+				int status = json.getInt("status");
+	
+				/** if status is not 0 then json response should be the desired
+				 * one.
+				 */
+				if( status != 0)
+				{
+					JSONArray jArr = json.getJSONArray("result");
+					
+					JSONObject jobj;
+					
+					this.mProductsData = new ArrayList<String[]>();
+					
+					for(int i = 0 ; i < jArr.length() ; i++)
+					{
+						jobj = jArr.getJSONObject(i);
+						
+						String[] tmpObj = {jobj.getString("id"), jobj.getString("name")};
+						this.mProductsData.add(tmpObj);
+					}
+				}
+				else
+				{
+					mProductsData = null;
+					new ShowToastMessage(this.mContext, json.getString("message"));
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+				mProductsData = null;
+				new ShowToastMessage(this.mContext, this.mAppResources
+						.getString(R.string.empty_json));
+			}
+		}
+		else
+		{
+			mProductsData = null;
+			new ShowToastMessage(this.mContext, this.mAppResources
+					.getString(R.string.empty_json));
+		}
+
+		if(this.mServerActionListener != null)
+		{
+			this.mServerActionListener.PostAction(isSuccessful, json);
+		}
+		
+		if(this.mPDialog != null)
+			if(this.mPDialog.isShowing())
+				this.mPDialog.dismiss();
+	}
+
+	/**
+	 ** (non-Javadoc)
+	 ** @see com.image_bs.mercherdiseinvestigation.ServerResponse
+	 ** 		#onRequestHandler()
+	 ** 
+	 ** Initializes, sets and show ProgressDialog
+	 **/
+	@Override
+	void onRequestHandler() {
+        mPDialog = new ProgressDialog(this.mContext);
+        mPDialog.setCancelable(true);
+        mPDialog.setMessage("Searching the magic!");
+		mPDialog.show();
+	}
+
+	
+	/**
+	 **  TODO getIsPostActionCalled
+	 **  
+	 **  @see com.image_bs.mercherdiseinvestigation.FormReader#getIsPostActionCalled();
+	 **/
 }

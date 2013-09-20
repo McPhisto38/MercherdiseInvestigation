@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:id="@+id/IntegerQuestionLayout">
+
+    <TextView
+        android:id="@+id/IntegerQuestion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+		android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/IntegerAnswer"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/IntegerAnswer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+       	android:gravity="right"
+        android:ems="2"
+        android:inputType="number"
+        android:maxLength="2"
+        android:selectAllOnFocus="true"
+        android:singleLine="true" >
+
+        <requestFocus />
+    </EditText>
+
+</RelativeLayout>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:id="@+id/FloatQuestionLayout">
+
+    <TextView
+        android:id="@+id/FloatQuestion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+		android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/FloatAnswer"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/FloatAnswer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+       	android:gravity="right"
+        android:ems="4"
+        android:inputType="numberDecimal"
+        android:maxLength="4"
+        android:selectAllOnFocus="true"
+        android:singleLine="true" >
+
+        <requestFocus />
+    </EditText>
+
+</RelativeLayout>

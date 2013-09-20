@@ -1,60 +1,97 @@
+/*
+ * Copyright (C) 2013 Image Business Solutions
+ * Developed by Nikolai Vasilev - coder.servoper@gmail.com
+ */
 package com.image_bs.mercherdiseinvestigation;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
-//import android.widget.Filter.FilterResults;
 import android.widget.TextView;
 
- public class PlaceListAdapter extends ArrayAdapter<Item> {
+/**
+	 * The Class PlaceListAdapter.
+	 */
+ public class PlaceListAdapter extends ArrayAdapter<PlaceItem> {
  
-  private ArrayList<Item> originalList;
-  private ArrayList<Item> viewPlaceList;
-  private PlaceFilter filter;
-  private Context context;
+  /** The original list. */
+  private ArrayList<PlaceItem> mOriginalList;
+  
+  /** The view place list. */
+  private ArrayList<PlaceItem> mViewPlaceList;
+  
+  /** The place filter. */
+  private PlaceFilter mPlaceFilter;
+  
+  /** The context. */
+  private Context mContext;
  
+  /**
+	 * Instantiates a new place list adapter.
+	 * 
+	 * @param context
+	 *            the context
+	 * @param textViewResourceId
+	 *            the text view resource id
+	 * @param countryList
+	 *            the country list
+	 */
   public PlaceListAdapter(Context context, int textViewResourceId, 
-    ArrayList<Item> countryList) {
+    ArrayList<PlaceItem> countryList) {
    super(context, textViewResourceId, countryList);
-   this.context = context;
-   this.viewPlaceList = new ArrayList<Item>();
-   this.viewPlaceList.addAll(countryList);
-   this.originalList = new ArrayList<Item>();
-   this.originalList.addAll(countryList);
+   this.mContext = context;
+   this.mViewPlaceList = new ArrayList<PlaceItem>();
+   this.mViewPlaceList.addAll(countryList);
+   this.mOriginalList = new ArrayList<PlaceItem>();
+   this.mOriginalList.addAll(countryList);
   }
  
+	/* (non-Javadoc)
+	 * @see android.widget.ArrayAdapter#getFilter()
+	 */
 	@Override
 	public Filter getFilter() 
 	{
-		if (filter == null){
-			filter  = new PlaceFilter();
+		if (mPlaceFilter == null){
+			mPlaceFilter  = new PlaceFilter();
 		}
-		return filter;
+		return mPlaceFilter;
 	}
  
-  	@Override
+  	/* (non-Javadoc)
+	   * @see android.widget.ArrayAdapter#getView(int, android.view.View, android.view.ViewGroup)
+	   */
+	  @Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View v = convertView;
 		
-		LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		   
-		if(viewPlaceList.get(position).isPlaceCategory())
+		LayoutInflater vi = (LayoutInflater) mContext
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		
+		/**
+		 * In place list there is category view and place information view
+		 * so we need to check what the current item is
+		 */
+		if(mViewPlaceList.get(position).isPlaceCategory())
 		{
 			v = vi.inflate(R.layout.place_category_item, null);
-			   
+			
+			/**
+			 * if it's category the item should not be clickable
+			 */
 			v.setOnClickListener(null);
 			v.setOnLongClickListener(null);
 			v.setLongClickable(false);
 			   
 			TextView categoryName = (TextView) v.findViewById(R.id.placeCategoryName);
 			
-			PlaceCategory category = (PlaceCategory) viewPlaceList.get(position);
+			PlaceCategory category = (PlaceCategory) mViewPlaceList.get(position);
 			categoryName.setText(category.getPlaceCategoryName());
 		}
 		else
@@ -65,7 +102,7 @@ import android.widget.TextView;
 			TextView placeAddress = (TextView) v.findViewById(R.id.tvPlaceAddress);
 			TextView placeLastVisit = (TextView) v.findViewById(R.id.tvLastVisit);
 			
-			PlaceData place = (PlaceData) viewPlaceList.get(position);
+			PlaceData place = (PlaceData) mViewPlaceList.get(position);
 			placeName.setText(place.getPlaceName());
 			placeAddress.setText(place.getPlaceAddress());
 			placeLastVisit.setText(place.getLastVisit());
@@ -74,51 +111,69 @@ import android.widget.TextView;
 		return v;
 	}
  
+  /**
+	 * The Class PlaceFilter for filtering list items.
+	 */
   private class PlaceFilter extends Filter
   {
  
+   /* (non-Javadoc)
+    * @see android.widget.Filter#performFiltering(java.lang.CharSequence)
+    */
    @Override
    protected FilterResults performFiltering(CharSequence constraint) {
  
-    constraint = constraint.toString().toLowerCase();
+    constraint = constraint.toString().toLowerCase(Locale.getDefault());
     FilterResults result = new FilterResults();
+    
+    /** checks if there is some filtering constraint */
     if(constraint != null && constraint.toString().length() > 0)
     {
-    ArrayList<PlaceData> filteredItems = new ArrayList<PlaceData>();
- 
-    for(int i = 0, l = originalList.size(); i < l; i++)
-    {
-    	if(!originalList.get(i).isPlaceCategory())
-    	{
-			PlaceData place = (PlaceData) originalList.get(i);
-			if(place.toString().toLowerCase().contains(constraint))
-				filteredItems.add(place);
-    	}
-    }
-    result.count = filteredItems.size();
-    result.values = filteredItems;
+    	/** ArrayList which will contain filtered items */
+	    ArrayList<PlaceData> filteredItems = new ArrayList<PlaceData>();
+	 
+	    for(int i = 0, l = mOriginalList.size(); i < l; i++)
+	    {
+	    	/** we don't want to filter categories */
+	    	if(!mOriginalList.get(i).isPlaceCategory())
+	    	{
+				PlaceData place = (PlaceData) mOriginalList.get(i);
+				if(place.toString().toLowerCase(Locale.getDefault()).contains(constraint))
+					filteredItems.add(place);
+	    	}
+	    }
+	    /**
+	     * adding the filtered items to the actual result
+	     */
+	    result.count = filteredItems.size();
+	    result.values = filteredItems;
     }
     else
     {
+    	/** if there is no constraint return the original items to the list */
      synchronized(this)
      {
-      result.values = originalList;
-      result.count = originalList.size();
+      result.values = mOriginalList;
+      result.count = mOriginalList.size();
      }
     }
     return result;
    }
  
+   /* (non-Javadoc)
+    * @see android.widget.Filter#publishResults(java.lang.CharSequence, android.widget.Filter.FilterResults)
+    */
    @SuppressWarnings("unchecked")
    @Override
    protected void publishResults(CharSequence constraint, 
      FilterResults results) {
  
-    viewPlaceList = (ArrayList<Item>)results.values;
+	   /** refreshing the views */
+    mViewPlaceList = (ArrayList<PlaceItem>)results.values;
     notifyDataSetChanged();
     clear();
-    for(int i = 0, l = viewPlaceList.size(); i < l; i++)
-     add(viewPlaceList.get(i));
+    for(int i = 0, l = mViewPlaceList.size(); i < l; i++)
+     add(mViewPlaceList.get(i));
     notifyDataSetInvalidated();
    }
   }

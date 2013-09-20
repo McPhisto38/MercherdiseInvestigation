@@ -3,6 +3,7 @@
 
     <string name="app_name">Mercherdise Investigation</string>
     <string name="action_settings">Settings</string>
+    <string name="action_logout">Logout</string>
     <string name="hello_world">Hello world!</string>
     <string name="products_list_header">List Header</string>
     <string name="product_name">Product name</string>

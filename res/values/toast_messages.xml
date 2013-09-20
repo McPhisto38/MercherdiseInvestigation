@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_empty_input">If you want to see the magic you need to give something!</string>
+    <string name="not_connected">You don\'t have connection with the wizards!</string>
+    <string name="empty_json">Wizards gave you something mystical for me!</string>
+    <string name="cant_send">I don\'t see the wizards now\.\.\. I\'ll call them later!</string>
+    <string name="saved">Job is done and the letter is in the wizzards!</string>
+    <string name="login_incorrect_input">Pfff u think wizzzzards will like what u give em ? It\'s incorrect</string>
+</resources>

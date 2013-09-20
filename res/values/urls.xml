@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="url_main">http://test.image-bs.com</string>
+    <string name="url_login">http://test.image-bs.com/loginRequest.php</string>
+    <string name="url_places">http://test.image-bs.com/getPlacesSorted.php</string>
+    <string name="url_company">http://test.image-bs.com/getCompanies.php</string>
+    <string name="url_category">http://test.image-bs.com/getCategories.php</string>
+    <string name="url_questions">http://test.image-bs.com/getQuestions.php</string>
+    <string name="url_full_forms_list">http://test.image-bs.com/getFullFormList.php</string>
+    <string name="url_save_data">http://test.image-bs.com/saveData.php</string>
+    
+</resources>
